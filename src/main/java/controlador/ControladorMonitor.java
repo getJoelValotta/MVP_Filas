@@ -1,15 +1,18 @@
 package controlador;
 
-import interfaces.MonitorGUI;
-import javax.swing.SwingUtilities;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.SwingUtilities;
+
+import vistas.MonitorGUI;
+
 public class ControladorMonitor {
 
     private MonitorGUI vista;
+
     private final int PORT = 1337; // Debe coincidir con el puerto del Operador
 
     public ControladorMonitor(MonitorGUI vista) {
@@ -33,7 +36,7 @@ public class ControladorMonitor {
                         if (dniRecibido != null && !dniRecibido.isEmpty()) {
                             // Sincronizamos con el hilo de la GUI para actualizar las etiquetas
                             SwingUtilities.invokeLater(() -> {
-                                vista.registrarLlamado(dniRecibido);
+                                vista.registrarLlamado(dniRecibido,"1");
                             });
                         }
                     } catch (Exception e) {

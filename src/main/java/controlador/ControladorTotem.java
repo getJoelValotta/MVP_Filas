@@ -2,47 +2,48 @@ package controlador;
 
 import java.awt.event.ActionListener;
 
-import exceptions.DniInvalidoException;
-import exceptions.DniVacioException;
-import interfaces.ClienteGUI;
-import modelo.EmisorDatos;
 import modelo.Cliente;
+import modelo.EmisorDatos;
+import vistas.TotemGUI;
 
-public class ControladorCliente implements ActionListener {
-    private ClienteGUI vistaCliente;
-    private EmisorDatos registros;
+public class ControladorTotem implements ActionListener {
+    private TotemGUI vistaCliente;
+    private EmisorDatos emisorDatos;
     private int PORT = 777;
 
-    public ControladorCliente(ClienteGUI vistaCliente, EmisorDatos registros) {
+    public ControladorTotem(TotemGUI vistaCliente, EmisorDatos emisorDatos) {
         this.vistaCliente = vistaCliente;
-        this.registros = registros;
-        this.vistaCliente.setActionListener(this);
+        this.emisorDatos = emisorDatos;
+        this.vistaCliente.setListener(this);
     }
 
 
     //Nota: El manejo de estos errores debe ser manejado por EmisorDatos y Cliente. 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-
-        String dni = vistaCliente.getDniIngresado();
+        boolean respuesta;
+        String dni = vistaCliente.getDNI();
         if (dni == null || dni.trim().isEmpty()) {
-            vistaCliente.mostrarError(Cliente.msgA);
+            vistaCliente.setGuiaError(Cliente.msgA);
             return;
         }
         if (!dni.matches("\\d+")) {
-            vistaCliente.mostrarError(Cliente.msgB);
+            vistaCliente.setGuiaError(Cliente.msgB);
             return;
         }
         long dniDepurado = Long.parseLong(dni);
-        vistaCliente.mostrarExito("Dni Ingresado");
-        registros.enviarDatos(dniDepurado, PORT);
+        vistaCliente.setGuiaExito("Dni Ingresado");
+        respuesta = emisorDatos.enviarDNI(dniDepurado, PORT);
+        if (respuesta == false){
+            vistaCliente.setGuiaError("El DNI ya se encuentra registrado.");
+        }
         try {
          Thread.sleep(1000);
         }
         catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        vistaCliente.limpiarMensaje();
+        vistaCliente.limpiaDNI();
     }   
         
 }

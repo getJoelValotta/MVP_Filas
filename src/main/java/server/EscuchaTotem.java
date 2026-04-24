@@ -1,14 +1,11 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import exceptions.*;
-import modelo.Cliente;
+
 import modelo.GestorFila;
 
-public class EscuchaTotem  implements Runnable{
+public class EscuchaTotem implements Runnable{
     private GestorFila gestorFila;
     private int PORT = 777;
     private String IP = "localhost";
@@ -23,22 +20,10 @@ public class EscuchaTotem  implements Runnable{
             ServerSocket serverSocket = new ServerSocket(PORT);
             while (true) {
                 Socket socket = serverSocket.accept();
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                dniRecibido = in.readLine();
-                try {
-                    Cliente cliente = new Cliente(dniRecibido);
-                    gestorFila.agregarCliente(cliente);
-                }
-                catch (DniVacioException e) {
-                    System.err.println("Error al procesar cliente: " + e.getMessage());
-                }
-                catch (DniInvalidoException e) {
-                    System.err.println("Error al procesar cliente: " + e.getMessage());
-                }
-                in.close();
+                new Thread(new ManejadorCliente(socket, gestorFila)).start();
                 socket.close();
             }
-        } 
+        }
         catch (Exception e) {
             e.printStackTrace();
         }

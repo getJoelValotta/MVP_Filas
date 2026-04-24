@@ -2,24 +2,22 @@ package controlador;
 
 import java.awt.event.ActionListener;
 
-import interfaces.PuestoGUI;
-import modelo.Llamados;
+import vistas.PuestoGUI;
 import modelo.Cliente;
 import modelo.EmisorDatos;
 
-public class ControladorOperador implements ActionListener {
+public class ControladorPuesto implements ActionListener {
     private PuestoGUI vistaPuesto;
-    private Llamados llamados;
     private EmisorDatos emisorDatos;
-    private final int PORT_MONITOR = 1337;
+    //private final int PORT_MONITOR = 1337;            //comentado porque no se si lo necesita
     
-    public ControladorOperador(PuestoGUI vistaPuesto, Llamados llamados) {
+    public ControladorPuesto(PuestoGUI vistaPuesto) {
         this.vistaPuesto = vistaPuesto;
-        this.llamados = llamados;
         this.emisorDatos = new EmisorDatos();
-        this.vistaPuesto.setActionListener(this);
+        //this.vistaPuesto.setActionListener(this);
     }
 
+    
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         vistaPuesto.limpiarMensaje();
@@ -35,5 +33,6 @@ public class ControladorOperador implements ActionListener {
             vistaPuesto.getBtnLlamarSiguiente().setEnabled(true);
         }
     }
+    
 
 }

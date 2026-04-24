@@ -1,19 +1,24 @@
 package modelo;
 
-import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import exceptions.DniRepetidoException;
 
 
 public class GestorFila {
+    public static final String msgA = "El DNI ya se encuentra registrado.";
 
-    private Queue<Cliente> cola = null;
+    private LinkedBlockingQueue<Cliente> cola = null;
 
     public GestorFila() {
         this.cola = new LinkedBlockingQueue<>();
     }
 
-    public void agregarCliente(Cliente cliente) {
-        cola.offer(cliente);
+    public void agregarCliente(Cliente cliente) throws DniRepetidoException {
+        if (this.cola.contains(cliente)) {
+            throw new DniRepetidoException(msgA);
+        }
+        this.cola.add(cliente);
     }
 
     public Cliente llamarSiguiente() throws Exception {
