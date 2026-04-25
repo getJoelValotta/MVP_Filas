@@ -2,7 +2,6 @@ package server;
 
 import java.io.DataInputStream;
 import controlador.ControladorPuesto;
-import modelo.ModeloPuesto;
 
 public class EscuchaServerPuesto extends Thread {
     ControladorPuesto controladorPuesto;
