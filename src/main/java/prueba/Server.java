@@ -1,7 +1,7 @@
 package prueba;
 
-    import modelo.GestorFila;
-    import server.EscuchaPuesto;
+import modelo.GestorFila;
+import server.EscuchaPuesto;
 import server.EscuchaTotem;
 
 public class Server {
@@ -10,7 +10,7 @@ public class Server {
         GestorFila colaClientes = new GestorFila();
         EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes);
         new Thread(escuchaPuesto).start();
-        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
-        new Thread(escuchaTotem).start();
+        // EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
+        // new Thread(escuchaTotem).start();
     }
 }

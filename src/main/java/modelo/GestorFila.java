@@ -4,8 +4,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import exceptions.DniRepetidoException;
 
-
-public class GestorFila {
+public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public static final String msgA = "El DNI ya se encuentra registrado.";
 
     private LinkedBlockingQueue<Cliente> cola = null;

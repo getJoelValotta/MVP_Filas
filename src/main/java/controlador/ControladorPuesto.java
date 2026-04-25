@@ -5,34 +5,65 @@ import java.awt.event.ActionListener;
 import vistas.PuestoGUI;
 import modelo.Cliente;
 import modelo.EmisorDatos;
+import modelo.ModeloPuesto;
+import java.io.DataInputStream;
 
-public class ControladorPuesto implements ActionListener {
+public class ControladorPuesto extends Thread { /* implements ActionListener */
     private PuestoGUI vistaPuesto;
-    private EmisorDatos emisorDatos;
-    //private final int PORT_MONITOR = 1337;            //comentado porque no se si lo necesita
-    
+    private ModeloPuesto modeloPuesto;
+    private final int PORT_ESCUCHAPUESTO = 888; // comentado porque no se si lo
+    // necesita
+
     public ControladorPuesto(PuestoGUI vistaPuesto) {
         this.vistaPuesto = vistaPuesto;
-        this.emisorDatos = new EmisorDatos();
-        //this.vistaPuesto.setActionListener(this);
+        this.modeloPuesto = new ModeloPuesto();
+        // this.vistaPuesto.setActionListener(this);
     }
 
-    
-    @Override
-    public void actionPerformed(java.awt.event.ActionEvent e) {
-        vistaPuesto.limpiarMensaje();
-        vistaPuesto.getBtnLlamarSiguiente().setEnabled(false);
+    public void run() { // Puede estar mal? Hice un thread que corre para recibir input del server en el
+                        // controlador. revisar.
         try {
-        Cliente cliente = llamados.getGestorFila().llamarSiguiente();
-        emisorDatos.enviarDatos(cliente.getDni(), PORT_MONITOR);
+            modeloPuesto.conectarAServer("localhost", PORT_ESCUCHAPUESTO);
+        } catch (Exception e) {
+            System.out.println("Error conectando al servidor.");
         }
-        catch (Exception ex) {
-            vistaPuesto.mostrarError();
+        try {
+            DataInputStream in = modeloPuesto.getInputStream();
+            while (true) {
+                String numClientesEsperaStr = in.readUTF();
+                int numClientesEspera = Integer.parseInt(numClientesEsperaStr);
+                modeloPuesto.setNumClientes(numClientesEspera);
+                // TODO: vistaPuesto.mostrarNumClientesEspera(numClientesEspera);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error obteniendo el input stream del servidor.");
+        } finally {
+            try {
+                modeloPuesto.desconectarDelServer();
+            } catch (Exception e) {
+                System.out.println("Error desconectando del servidor.");
+            }
         }
-        finally {
-            vistaPuesto.getBtnLlamarSiguiente().setEnabled(true);
-        }
+
     }
-    
+
+    /*
+     * @Override
+     * public void actionPerformed(java.awt.event.ActionEvent e) {
+     * vistaPuesto.limpiarMensaje();
+     * vistaPuesto.getBtnLlamarSiguiente().setEnabled(false);
+     * try {
+     * Cliente cliente = llamados.getGestorFila().llamarSiguiente();
+     * emisorDatos.enviarDatos(cliente.getDni(), PORT_MONITOR);
+     * }
+     * catch (Exception ex) {
+     * vistaPuesto.mostrarError();
+     * }
+     * finally {
+     * vistaPuesto.getBtnLlamarSiguiente().setEnabled(true);
+     * }
+     * }
+     */
 
 }
