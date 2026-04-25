@@ -39,8 +39,9 @@ public class EscuchaPuesto implements Runnable {
         puestosDisponibles.add(num);
     }
 
-    // METODO QUE ACTUALIZA A TODOS LOS PUESTOS EL NUMERO DE CLIENTES.
-    private void actualizarClientesEspera(int numClientesEspera) {
+    // METODO QUE ACTUALIZA A TODOS LOS PUESTOS EL NUMERO DE CLIENTES. Debe ser
+    // llamada por el esuchaTotem maybe.
+    public void actualizarClientesEspera(int numClientesEspera) {
         for (ManejaPuesto puesto : manejadoresPuestos.values()) {
             puesto.mandaNumClientesEspera(numClientesEspera);
         }

@@ -53,4 +53,8 @@ public class ModeloPuesto {
     public void setNumClientes(int numClientes) {
         this.numClientesEsperando = numClientes;
     }
+
+    public int getNumPuesto() {
+        return this.numeroPuesto;
+    }
 }

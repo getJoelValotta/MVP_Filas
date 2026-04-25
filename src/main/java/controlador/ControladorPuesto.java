@@ -1,18 +1,15 @@
 package controlador;
 
-import java.awt.event.ActionListener;
-
 import vistas.PuestoGUI;
-import modelo.Cliente;
-import modelo.EmisorDatos;
 import modelo.ModeloPuesto;
 import java.io.DataInputStream;
+import java.io.IOException;
+import server.EscuchaServerPuesto;
 
 public class ControladorPuesto extends Thread { /* implements ActionListener */
     private PuestoGUI vistaPuesto;
     private ModeloPuesto modeloPuesto;
-    private final int PORT_ESCUCHAPUESTO = 888; // comentado porque no se si lo
-    // necesita
+    private final int PORT_ESCUCHAPUESTO = 888;
 
     public ControladorPuesto(PuestoGUI vistaPuesto) {
         this.vistaPuesto = vistaPuesto;
@@ -20,32 +17,26 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
         // this.vistaPuesto.setActionListener(this);
     }
 
-    public void run() { // Puede estar mal? Hice un thread que corre para recibir input del server en el
-                        // controlador. revisar.
-        try {
-            modeloPuesto.conectarAServer("localhost", PORT_ESCUCHAPUESTO);
-        } catch (Exception e) {
-            System.out.println("Error conectando al servidor.");
-        }
-        try {
-            DataInputStream in = modeloPuesto.getInputStream();
-            while (true) {
-                String numClientesEsperaStr = in.readUTF();
-                int numClientesEspera = Integer.parseInt(numClientesEsperaStr);
-                modeloPuesto.setNumClientes(numClientesEspera);
-                // TODO: vistaPuesto.mostrarNumClientesEspera(numClientesEspera);
-            }
+    public void conectarPuesto() throws IOException {
+        modeloPuesto.conectarAServer("localhost", PORT_ESCUCHAPUESTO);
+    }
 
-        } catch (Exception e) {
-            System.out.println("Error obteniendo el input stream del servidor.");
-        } finally {
-            try {
-                modeloPuesto.desconectarDelServer();
-            } catch (Exception e) {
-                System.out.println("Error desconectando del servidor.");
-            }
-        }
+    public void desconectarDelServer() throws IOException {
+        modeloPuesto.desconectarDelServer();
+    }
 
+    public DataInputStream getInputStream() throws IOException {
+        return modeloPuesto.getInputStream();
+    }
+
+    public void setNumClientes(int numClientes) {
+        modeloPuesto.setNumClientes(numClientes);
+        // TODO: actualizar vista
+    }
+
+    public void main(String[] args) {
+        // ARRANCA EL HILO QUE ESCUCHA AL SERVIDOR.
+        new EscuchaServerPuesto(this).start();
     }
 
     /*
