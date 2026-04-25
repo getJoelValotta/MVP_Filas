@@ -7,9 +7,9 @@ import vistas.MonitorGUI;
 public class Monitor {
     public static void main(String[] args) {
     MonitorGUI vistaMonitor = new MonitorGUI();
-    ReceptorDatosMonitor receptor = new ReceptorDatosMonitor();
-    new Thread(receptor).start();
-    new ControladorMonitor(vistaMonitor); 
+    ControladorMonitor controladorMonitor = new ControladorMonitor(vistaMonitor); 
+    ReceptorDatosMonitor receptor = new ReceptorDatosMonitor(controladorMonitor);
+    receptor.start();
     vistaMonitor.setVisible(true);
 }
 }

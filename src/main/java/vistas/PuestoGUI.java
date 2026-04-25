@@ -1,5 +1,7 @@
 package vistas;
 
+import java.awt.event.ActionListener;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -58,5 +60,10 @@ public class PuestoGUI extends JPanel {
 		this.btnLlamar.setEnabled(false);
 		this.btnRenotificar.setEnabled(false);
 	}
+
+	public void setActionListener(ActionListener controlador) {
+        btnLlamar.addActionListener(controlador);
+		btnRenotificar.addActionListener(controlador);
+    }
 
 }

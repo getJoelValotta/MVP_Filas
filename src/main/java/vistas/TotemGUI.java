@@ -80,4 +80,8 @@ public class TotemGUI extends JPanel {
 
 	}
 
+    public void setActionListener(ActionListener controlador) {
+        btnRegistrar.addActionListener(controlador);
+    }
+
 }

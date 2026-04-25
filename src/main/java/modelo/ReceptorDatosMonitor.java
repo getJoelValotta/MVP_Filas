@@ -4,9 +4,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ReceptorDatosMonitor implements Runnable {
+import interfaces.EscuchadorDeSocket;
+public class ReceptorDatosMonitor extends Thread {
     private String IP = "localhost";
-    private int port = 1111;
+    private int port = 999;
+    private EscuchadorDeSocket controlador;
+
+    public ReceptorDatosMonitor(EscuchadorDeSocket controlador){
+        this.controlador = controlador;
+    }
 
     public void run() {
         try {
@@ -15,7 +21,7 @@ public class ReceptorDatosMonitor implements Runnable {
             while(true){
                 String dniRecibido = in.readLine();
                 String puesto = in.readLine();
-
+                controlador.accionRealizada(dniRecibido,puesto);
             }
         } catch (Exception e) {
             e.printStackTrace();
