@@ -5,8 +5,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.*;
 
-import javax.xml.crypto.Data;
-
 public class ModeloPuesto {
     // Instancia de puesto, va a tener:
     // - numero de puesto, numero de clientes esperando
@@ -30,6 +28,8 @@ public class ModeloPuesto {
         DataInputStream in = new DataInputStream(socket.getInputStream());
         this.numeroPuesto = Integer.parseInt(in.readUTF());
         System.out.println("Conectado al servidor. Numero de puesto asignado: " + numeroPuesto);
+        this.numClientesEsperando = Integer.parseInt(in.readUTF());
+        System.out.println("Numero de clientes esperando: " + numClientesEsperando);
     }
 
     public void desconectarDelServer() throws IOException {
@@ -52,6 +52,10 @@ public class ModeloPuesto {
 
     public void setNumClientes(int numClientes) {
         this.numClientesEsperando = numClientes;
+    }
+
+    public int getNumClientes() {
+        return this.numClientesEsperando;
     }
 
     public int getNumPuesto() {

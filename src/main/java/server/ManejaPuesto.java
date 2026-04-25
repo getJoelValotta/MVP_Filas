@@ -13,15 +13,17 @@ import modelo.GestorFila;
 
 public class ManejaPuesto extends Thread {
     private Socket socket;
-    private int numPuesto;
+    private int numPuesto, numClientesEspera;
     private GestorFila gestorfila;
     private EscuchaPuesto escuchaPuesto;
     private DataInputStream inStream;
     private DataOutputStream outStream;
 
-    public ManejaPuesto(Socket socket, int numPuesto, GestorFila gestorfila, EscuchaPuesto escuchaPuesto) {
+    public ManejaPuesto(Socket socket, int numPuesto, int numClientesEspera, GestorFila gestorfila,
+            EscuchaPuesto escuchaPuesto) {
         this.socket = socket;
         this.numPuesto = numPuesto;
+        this.numClientesEspera = numClientesEspera;
         this.gestorfila = gestorfila;
         this.escuchaPuesto = escuchaPuesto;
         try {
@@ -47,8 +49,11 @@ public class ManejaPuesto extends Thread {
                         // output.
         String dniRecibido;
         System.out.println("Se ha conectado el puesto " + numPuesto + ".");
+
         try {
             this.outStream.writeUTF(String.valueOf(numPuesto)); // Le digo al puesto su numero
+            this.outStream.writeUTF(String.valueOf(numClientesEspera)); // Le mando el numero de clientes esperando
+                                                                        // inicial
             while (true) {
                 // RECIBE INPUT DEL PUESTO
                 dniRecibido = inStream.readUTF();

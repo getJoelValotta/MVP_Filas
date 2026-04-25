@@ -17,7 +17,7 @@ public class EscuchaServerPuesto extends Thread {
             while (true) {
                 String numClientesEsperaStr = in.readUTF();
                 int numClientesEspera = Integer.parseInt(numClientesEsperaStr);
-                controladorPuesto.setNumClientes(numClientesEspera);
+                controladorPuesto.setNumClientesModelo(numClientesEspera);
             }
 
         } catch (Exception e) {

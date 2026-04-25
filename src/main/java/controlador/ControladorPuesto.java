@@ -17,8 +17,15 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
         // this.vistaPuesto.setActionListener(this);
     }
 
-    public void conectarPuesto() throws IOException {
-        modeloPuesto.conectarAServer("localhost", PORT_ESCUCHAPUESTO);
+    public void conectarPuesto() {
+        try {
+            modeloPuesto.conectarAServer("localhost", PORT_ESCUCHAPUESTO);
+        } catch (IOException e) {
+            System.out.println("Error conectando al servidor.");
+        } finally {
+            actualizaNumClientesVista(modeloPuesto.getNumClientes());
+        }
+
     }
 
     public void desconectarDelServer() throws IOException {
@@ -29,32 +36,18 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
         return modeloPuesto.getInputStream();
     }
 
-    public void setNumClientes(int numClientes) {
+    public void setNumClientesModelo(int numClientes) {
         modeloPuesto.setNumClientes(numClientes);
-        // TODO: actualizar vista
+        actualizaNumClientesVista(numClientes);
+    }
+
+    public void actualizaNumClientesVista(int numClientes) {
+        // TODO: MILI
     }
 
     public void main(String[] args) {
         // ARRANCA EL HILO QUE ESCUCHA AL SERVIDOR.
         new EscuchaServerPuesto(this).start();
     }
-
-    /*
-     * @Override
-     * public void actionPerformed(java.awt.event.ActionEvent e) {
-     * vistaPuesto.limpiarMensaje();
-     * vistaPuesto.getBtnLlamarSiguiente().setEnabled(false);
-     * try {
-     * Cliente cliente = llamados.getGestorFila().llamarSiguiente();
-     * emisorDatos.enviarDatos(cliente.getDni(), PORT_MONITOR);
-     * }
-     * catch (Exception ex) {
-     * vistaPuesto.mostrarError();
-     * }
-     * finally {
-     * vistaPuesto.getBtnLlamarSiguiente().setEnabled(true);
-     * }
-     * }
-     */
 
 }

@@ -11,6 +11,7 @@ import modelo.GestorFila;
 
 public class EscuchaPuesto implements Runnable {
     private int PORT = 888;
+    private int numClientesEspera = 0;
     private String IP = "localhost";
     private GestorFila gestorFila;
     // Set de numeros de puesto
@@ -56,7 +57,7 @@ public class EscuchaPuesto implements Runnable {
                 Socket socket = serverSocket.accept();
                 // Este codigo se corre una vez por cada puesto conectado al server
                 int numPuesto = getNumeroPuesto();
-                ManejaPuesto manejaPuesto = new ManejaPuesto(socket, numPuesto, gestorFila, this);
+                ManejaPuesto manejaPuesto = new ManejaPuesto(socket, numPuesto, numClientesEspera, gestorFila, this);
                 manejadoresPuestos.put(numPuesto, manejaPuesto);
                 manejaPuesto.start();
             }
@@ -77,7 +78,7 @@ public class EscuchaPuesto implements Runnable {
         return gestorFila;
     }
 
-    public int getPORT() {
+    public int getPORT() { // what? -L
         return PORT;
     }
 
