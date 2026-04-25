@@ -1,5 +1,6 @@
 package vistas;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
@@ -12,7 +13,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MonitorGUI extends JPanel {
+public class MonitorGUI extends JFrame {
 
     private JLabel[] lblTurnos;
     private JLabel[] lblPuestos;
@@ -21,7 +22,8 @@ public class MonitorGUI extends JPanel {
 
     public MonitorGUI() {
         setLayout(new GridLayout(MAX_HISTORIAL, 2, 5, 5));
-        
+        this.setSize(400,700);
+        this.setLocationRelativeTo(null);
         lblTurnos = new JLabel[MAX_HISTORIAL];
         lblPuestos = new JLabel[MAX_HISTORIAL];
         panelesFila = new JPanel[MAX_HISTORIAL * 2]; // Para guardar los paneles y cambiarles el color
