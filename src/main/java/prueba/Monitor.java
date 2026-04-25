@@ -9,7 +9,7 @@ public class Monitor {
     MonitorGUI vistaMonitor = new MonitorGUI();
     ControladorMonitor controladorMonitor = new ControladorMonitor(vistaMonitor); 
     ReceptorDatosMonitor receptor = new ReceptorDatosMonitor(controladorMonitor);
-    receptor.start();
+    new Thread (receptor).start();
     vistaMonitor.setVisible(true);
 }
 }

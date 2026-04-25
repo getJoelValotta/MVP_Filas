@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 import interfaces.EscuchadorDeSocket;
-public class ReceptorDatosMonitor extends Thread {
+public class ReceptorDatosMonitor implements Runnable {
     private String IP = "localhost";
     private int port = 999;
     private EscuchadorDeSocket controlador;
