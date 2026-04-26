@@ -18,14 +18,16 @@ public class ManejaPuesto extends Thread {
     private EscuchaPuesto escuchaPuesto;
     private DataInputStream inStream;
     private DataOutputStream outStream;
+    private HablaMonitor hablaMonitor;
 
     public ManejaPuesto(Socket socket, int numPuesto, int numClientesEspera, GestorFila gestorfila,
-            EscuchaPuesto escuchaPuesto) {
+            EscuchaPuesto escuchaPuesto, HablaMonitor hablaMonitor) {
         this.socket = socket;
         this.numPuesto = numPuesto;
         this.numClientesEspera = numClientesEspera;
         this.gestorfila = gestorfila;
         this.escuchaPuesto = escuchaPuesto;
+        this.hablaMonitor = hablaMonitor;
         try {
             this.inStream = new DataInputStream(socket.getInputStream());
             this.outStream = new DataOutputStream(socket.getOutputStream());
@@ -38,6 +40,7 @@ public class ManejaPuesto extends Thread {
     // LOS PUESTOS
     public synchronized void mandaNumClientesEspera(int numClientesEspera) {
         try {
+            this.outStream.writeUTF("CLI");
             this.outStream.writeUTF(String.valueOf(numClientesEspera));
             this.outStream.flush();
         } catch (Exception e) {
@@ -47,19 +50,30 @@ public class ManejaPuesto extends Thread {
 
     public void run() { // Esto se corre cuando se conecta a un nuevo puesto, y queda esuchando su
                         // output.
-        String dniRecibido;
+        String buffer;
         System.out.println("Se ha conectado el puesto " + numPuesto + ".");
 
         try {
+            this.outStream.writeUTF("PUE");
             this.outStream.writeUTF(String.valueOf(numPuesto)); // Le digo al puesto su numero
+            this.outStream.writeUTF("CLI");
             this.outStream.writeUTF(String.valueOf(numClientesEspera)); // Le mando el numero de clientes esperando
                                                                         // inicial
             while (true) {
-                // RECIBE INPUT DEL PUESTO
-                dniRecibido = inStream.readUTF();
+                // RECIBE INPUT DEL PUESTO (Este input por ahora es una senial, no importa que llegue)
+                buffer = inStream.readUTF(); 
                 try {
-                    Cliente cliente = new Cliente(dniRecibido);
-                    this.gestorfila.agregarCliente(cliente);
+                    if (buffer.equals("SIG")) {
+                        Cliente clienteSig = this.gestorfila.llamarSiguiente();
+                        hablaMonitor.actualizaLLamado(clienteSig.getDni(), numPuesto);
+                    } else if (buffer.equals("REN")) {
+                        buffer = inStream.readUTF();
+                        hablaMonitor.actualizaLLamado(Long.parseLong(buffer), numPuesto);
+                    } else {
+                        System.out.println("Codigo desconocido del puesto " + numPuesto + ": " + buffer);
+                    }
+                    
+
                 } catch (DniVacioException | DniInvalidoException e) {
                     System.err.println("Error al procesar cliente: " + e.getMessage());
                 }

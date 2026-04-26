@@ -1,12 +1,11 @@
 package vistas;
 
-import java.awt.event.ActionListener;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,7 +15,9 @@ import javax.swing.JPanel;
 public class PuestoGUI extends JPanel {
 	private JPanel panelAuxBtn;
 	private JPanel panelAuxLblLista;
+	private JPanel panelAuxLblActual;
 	private JLabel lblCantClientesEspera;
+	private JLabel lblClienteActual;
 	private JPanel panelAuxLlamar;
 	private JPanel panelAuxReLlamar;
 	private JButton btnLlamar;
@@ -49,6 +50,15 @@ public class PuestoGUI extends JPanel {
 		this.lblCantClientesEspera = new JLabel("");
 		this.lblCantClientesEspera.setFont(new Font("Segoe UI Variable", Font.PLAIN, 21));
 		this.panelAuxLblLista.add(this.lblCantClientesEspera);
+
+		this.panelAuxLblActual = new JPanel();
+		add(this.panelAuxLblLista, BorderLayout.NORTH);
+
+		this.lblClienteActual = new JLabel("");
+		this.lblClienteActual.setFont(new Font("Segoe UI Variable", Font.PLAIN, 21));
+		this.panelAuxLblActual.add(this.lblClienteActual);
+
+
 	}
 	
 	public void setCantClientes(int clientes) {
@@ -65,5 +75,15 @@ public class PuestoGUI extends JPanel {
         btnLlamar.addActionListener(controlador);
 		btnRenotificar.addActionListener(controlador);
     }
+
+	public void setClienteActual(long dni) {
+		this.lblClienteActual.setText("Cliente actual: "+ dni);
+		this.lblClienteActual.setForeground(Color.BLACK);
+	}
+
+	public void limpiarClienteActual(){
+		this.lblClienteActual.setText("");
+	}
+
 
 }

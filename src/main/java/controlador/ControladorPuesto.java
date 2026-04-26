@@ -1,10 +1,11 @@
 package controlador;
 
-import vistas.PuestoGUI;
-import modelo.ModeloPuesto;
 import java.io.DataInputStream;
 import java.io.IOException;
+
+import modelo.ModeloPuesto;
 import server.EscuchaServerPuesto;
+import vistas.PuestoGUI;
 
 public class ControladorPuesto extends Thread { /* implements ActionListener */
     private PuestoGUI vistaPuesto;
@@ -28,6 +29,12 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
 
     }
 
+    public void atiendeDNI(String DNI){
+        modeloPuesto.setDNIActual(DNI);
+        
+    }
+
+
     public void desconectarDelServer() throws IOException {
         modeloPuesto.desconectarDelServer();
     }
@@ -40,9 +47,13 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
         modeloPuesto.setNumClientes(numClientes);
         actualizaNumClientesVista(numClientes);
     }
+    public void setNumPuesto(int numPuesto) {
+        modeloPuesto.setNumPuesto(numPuesto);
+        // TODO: THIS. VISTA PUESTO. SET NUMPUESTO
+    }
 
     public void actualizaNumClientesVista(int numClientes) {
-        // TODO: MILI
+        this.vistaPuesto.setCantClientes(numClientes);
     }
 
     public void main(String[] args) {

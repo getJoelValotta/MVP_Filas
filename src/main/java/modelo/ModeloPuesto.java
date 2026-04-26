@@ -1,23 +1,25 @@
 package modelo;
 
-import java.io.DataOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.*;
+import java.net.Socket;
 
 public class ModeloPuesto {
     // Instancia de puesto, va a tener:
     // - numero de puesto, numero de clientes esperando
     // - metodo para llamar siguiente cliente
     // - un socket
-    private int numeroPuesto;
+    private int numPuesto;
     private Socket socket;
     public int numClientesEsperando;
+    private String DNI;
 
     public ModeloPuesto() {
         this.socket = null;
-        this.numeroPuesto = -1;
+        this.numPuesto = -1;
         this.numClientesEsperando = -1;
+        this.DNI = "";
     }
 
     // Da output en el socket, que es recibido por el SERVER, en manejaPuesto.java,
@@ -25,11 +27,10 @@ public class ModeloPuesto {
 
     public void conectarAServer(String ipServer, int puerto) throws IOException {
         this.socket = new Socket(ipServer, puerto);
-        DataInputStream in = new DataInputStream(socket.getInputStream());
-        this.numeroPuesto = Integer.parseInt(in.readUTF());
-        System.out.println("Conectado al servidor. Numero de puesto asignado: " + numeroPuesto);
-        this.numClientesEsperando = Integer.parseInt(in.readUTF());
-        System.out.println("Numero de clientes esperando: " + numClientesEsperando);
+    }
+
+    public void setDNIActual(String DNI){
+        this.DNI = DNI;
     }
 
     public void desconectarDelServer() throws IOException {
@@ -37,12 +38,24 @@ public class ModeloPuesto {
         System.out.println("Desconectado del servidor.");
     }
 
-    public void llamarCliente(String dni) {
+    public void llamarCliente() {
         try {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            out.writeBytes(dni + "\n");
+            out.writeUTF("SIG");
+            
         } catch (IOException e) {
-            System.out.println("Error enviando información del puesto " + numeroPuesto + ".");
+            System.out.println("Error enviando información del puesto " + numPuesto + ".");
+        }
+    }
+
+    public void reNotificar() {
+        try {
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("REN");
+            out.writeUTF(DNI);
+            
+        } catch (IOException e) {
+            System.out.println("Error renotificando puesto " + numPuesto + ".");
         }
     }
 
@@ -53,12 +66,15 @@ public class ModeloPuesto {
     public void setNumClientes(int numClientes) {
         this.numClientesEsperando = numClientes;
     }
+    public void setNumPuesto(int numPuesto){
+        this.numPuesto = numPuesto;
+    }
 
     public int getNumClientes() {
         return this.numClientesEsperando;
     }
 
     public int getNumPuesto() {
-        return this.numeroPuesto;
+        return this.numPuesto;
     }
 }

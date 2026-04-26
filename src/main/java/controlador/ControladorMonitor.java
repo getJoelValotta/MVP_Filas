@@ -1,16 +1,10 @@
 package controlador;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import javax.swing.SwingUtilities;
 
 import interfaces.EscuchadorDeSocket;
 import modelo.ReceptorDatosMonitor;
 import vistas.MonitorGUI;
-import interfaces.EscuchadorDeSocket;
 
 public class ControladorMonitor implements EscuchadorDeSocket {
 

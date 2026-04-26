@@ -1,8 +1,10 @@
 package server;
 
 import java.io.DataInputStream;
+
 import controlador.ControladorPuesto;
 
+/// RECIBE TODO EL INPUT PARA EL PUESTO
 public class EscuchaServerPuesto extends Thread {
     ControladorPuesto controladorPuesto;
 
@@ -11,13 +13,30 @@ public class EscuchaServerPuesto extends Thread {
     }
 
     public void run() {
+        String inputString;
         try {
             controladorPuesto.conectarPuesto();
             DataInputStream in = controladorPuesto.getInputStream();
             while (true) {
-                String numClientesEsperaStr = in.readUTF();
-                int numClientesEspera = Integer.parseInt(numClientesEsperaStr);
-                controladorPuesto.setNumClientesModelo(numClientesEspera);
+                inputString = in.readUTF();
+                if (inputString.equals("CLI")){
+                    int numClientesEspera = Integer.parseInt(in.readUTF());
+                    controladorPuesto.setNumClientesModelo(numClientesEspera);
+                }
+                else if(inputString.equals("DNI")){
+                    String DNI = in.readUTF();
+                    controladorPuesto.atiendeDNI(DNI);
+                }
+                else if (inputString.equals("PUE")) {
+                    int numPuesto = Integer.parseInt(in.readUTF());
+                    controladorPuesto.setNumPuesto(numPuesto);
+                    
+                }
+                else{
+                    System.out.println("Codigo desconocido: "+ inputString);
+                    String buffer = in.readUTF();
+                }
+                
             }
 
         } catch (Exception e) {
