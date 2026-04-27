@@ -42,7 +42,6 @@ public class ModeloPuesto {
         try {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF("SIG");
-            
         } catch (IOException e) {
             System.out.println("Error enviando información del puesto " + numPuesto + ".");
         }

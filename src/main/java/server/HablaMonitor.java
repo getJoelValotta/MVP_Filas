@@ -22,7 +22,7 @@ public class HablaMonitor extends Thread{
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             this.socketMonitor = serverSocket.accept();
-            DataOutputStream out = new DataOutputStream(this.socketMonitor.getOutputStream());
+            this.out = new DataOutputStream(this.socketMonitor.getOutputStream());
         }
         catch (Exception e) {
             System.out.println("No se pudo conectar el monitor " + e);
@@ -31,9 +31,9 @@ public class HablaMonitor extends Thread{
 
     public void actualizaLLamado(Long dni, int numPuesto) {
         try {
-            // ENVIA AL MONITOR UN STRING FORMATO "DNIXXXXX NUMPUESTO"
             out.writeUTF(Long.toString(dni));    
             out.writeUTF(Integer.toString(numPuesto));
+            System.out.println("Ahi mande al monitor el dni " + Long.toString(dni) + " y el puesto " + Integer.toString(numPuesto));
         } catch (Exception e) {
             System.out.println("Error actualizando el monitor " + e);
         }

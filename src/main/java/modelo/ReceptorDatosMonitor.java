@@ -1,7 +1,6 @@
 package modelo;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.DataInputStream;
 import java.net.Socket;
 
 import interfaces.EscuchadorDeSocket;
@@ -17,11 +16,15 @@ public class ReceptorDatosMonitor implements Runnable {
     public void run() {
         try {
             Socket socket = new Socket(IP, port);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            DataInputStream in = new DataInputStream(socket.getInputStream());
             while(true){
-                String dniRecibido = in.readLine();
-                String puesto = in.readLine();
+                System.out.println("Esperando datos del monitor...");
+                String dniRecibido = in.readUTF();
+                System.out.println("Dni recibido: " + dniRecibido);
+                String puesto = in.readUTF();
+                System.out.println("Puesto recibido: " + puesto);
                 controlador.accionRealizada(dniRecibido,puesto);
+                System.out.println("Listo pa");
             }
         } catch (Exception e) {
             e.printStackTrace();
