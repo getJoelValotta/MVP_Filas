@@ -29,7 +29,8 @@ public class ModeloPuesto {
         this.socket = new Socket(ipServer, puerto);
     }
 
-    public void setDNIActual(String DNI){
+    public void setDNIActual(String DNI) {
+        System.out.println("Puesto " + numPuesto + " atendiendo a cliente con DNI: " + DNI);
         this.DNI = DNI;
     }
 
@@ -52,7 +53,7 @@ public class ModeloPuesto {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF("REN");
             out.writeUTF(DNI);
-            
+
         } catch (IOException e) {
             System.out.println("Error renotificando puesto " + numPuesto + ".");
         }
@@ -65,7 +66,8 @@ public class ModeloPuesto {
     public void setNumClientes(int numClientes) {
         this.numClientesEsperando = numClientes;
     }
-    public void setNumPuesto(int numPuesto){
+
+    public void setNumPuesto(int numPuesto) {
         this.numPuesto = numPuesto;
     }
 

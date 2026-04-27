@@ -19,24 +19,23 @@ public class EscuchaServerPuesto extends Thread {
             DataInputStream in = controladorPuesto.getInputStream();
             while (true) {
                 inputString = in.readUTF();
-                if (inputString.equals("CLI")){
+                if (inputString.equals("CLI")) {
                     int numClientesEspera = Integer.parseInt(in.readUTF());
+                    System.out.println("Puestos tienen " + numClientesEspera
+                            + " clientes esperando.");
                     controladorPuesto.setNumClientesModelo(numClientesEspera);
-                }
-                else if(inputString.equals("DNI")){
+                } else if (inputString.equals("DNI")) {
                     String DNI = in.readUTF();
                     controladorPuesto.atiendeDNI(DNI);
-                }
-                else if (inputString.equals("PUE")) {
+                } else if (inputString.equals("PUE")) {
                     int numPuesto = Integer.parseInt(in.readUTF());
                     controladorPuesto.setNumPuesto(numPuesto);
-                    
-                }
-                else{
-                    System.out.println("Codigo desconocido: "+ inputString);
+
+                } else {
+                    System.out.println("Codigo desconocido: " + inputString);
                     String buffer = in.readUTF();
                 }
-                
+
             }
 
         } catch (Exception e) {

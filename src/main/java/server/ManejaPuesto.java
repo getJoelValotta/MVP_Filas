@@ -60,12 +60,19 @@ public class ManejaPuesto extends Thread {
             this.outStream.writeUTF(String.valueOf(numClientesEspera)); // Le mando el numero de clientes esperando
                                                                         // inicial
             while (true) {
-                // RECIBE INPUT DEL PUESTO (Este input por ahora es una senial, no importa que llegue)
-                buffer = inStream.readUTF(); 
+                // RECIBE INPUT DEL PUESTO (Este input por ahora es una senial, no importa que
+                // llegue)
+                buffer = inStream.readUTF();
                 try {
                     if (buffer.equals("SIG")) {
                         Cliente clienteSig = this.gestorfila.llamarSiguiente();
                         hablaMonitor.actualizaLLamado(clienteSig.getDni(), numPuesto);
+                        try {
+                            this.outStream.writeUTF("DNI");
+                            this.outStream.writeUTF(Long.toString(clienteSig.getDni()));
+                        } catch (Exception e) {
+                            System.out.println("Error enviando el DNI al puesto " + numPuesto + ".");
+                        }
                     } else if (buffer.equals("REN")) {
                         System.err.println("El puesto " + numPuesto + " ha solicitado re-notificar al cliente.");
                         buffer = inStream.readUTF();
@@ -74,7 +81,6 @@ public class ManejaPuesto extends Thread {
                     } else {
                         System.out.println("Codigo desconocido del puesto " + numPuesto + ": " + buffer);
                     }
-                    
 
                 } catch (DniVacioException | DniInvalidoException e) {
                     System.err.println("Error al procesar cliente: " + e.getMessage());
