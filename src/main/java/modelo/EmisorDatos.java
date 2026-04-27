@@ -10,6 +10,10 @@ public class EmisorDatos {
     private int port = 777;
     private Socket socket;
 
+    public void EmisorDatos() {
+        this.socket = null;
+    }
+
     public void  conectarAServer() {
         try {
             this.socket = new Socket(IP, port);

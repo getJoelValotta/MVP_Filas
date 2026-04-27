@@ -1,5 +1,6 @@
 package controlador;
 
+import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -7,7 +8,7 @@ import modelo.ModeloPuesto;
 import server.EscuchaServerPuesto;
 import vistas.PuestoGUI;
 
-public class ControladorPuesto extends Thread { /* implements ActionListener */
+public class ControladorPuesto extends Thread implements ActionListener { /* implements ActionListener */
     private PuestoGUI vistaPuesto;
     private ModeloPuesto modeloPuesto;
     private final int PORT_ESCUCHAPUESTO = 888;
@@ -15,8 +16,14 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
     public ControladorPuesto(PuestoGUI vistaPuesto) {
         this.vistaPuesto = vistaPuesto;
         this.modeloPuesto = new ModeloPuesto();
-        // this.vistaPuesto.setActionListener(this);
+        this.vistaPuesto.setActionListener(this);
     }
+
+    public void actionPerformed(java.awt.event.ActionEvent e) { 
+        vistaPuesto.limpiarClienteActual();
+        modeloPuesto.llamarCliente();
+    }
+    
 
     public void conectarPuesto() {
         try {

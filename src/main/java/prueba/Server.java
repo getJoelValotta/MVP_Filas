@@ -11,9 +11,9 @@ public class Server {
         GestorFila colaClientes = new GestorFila();
         HablaMonitor hablaMonitor = new HablaMonitor(colaClientes);
         EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes, hablaMonitor);
+        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
         hablaMonitor.start();
         new Thread(escuchaPuesto).start();
-        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
         new Thread(escuchaTotem).start();
     }
 }

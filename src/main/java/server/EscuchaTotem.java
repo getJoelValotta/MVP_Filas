@@ -15,7 +15,6 @@ public class EscuchaTotem implements Runnable{
     }
 
     public void run() { // se inicia: new Thread(new EscuchaTotem()).start();)
-        String dniRecibido;
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             while (true) {

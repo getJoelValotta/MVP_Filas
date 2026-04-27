@@ -15,9 +15,17 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
 
     public void agregarCliente(Cliente cliente) throws DniRepetidoException {
         System.out.println("Agregando cliente con DNI: " + cliente.getDni());
-        if (!this.cola.isEmpty() && this.cola.contains(cliente)) {
+        boolean dniRepetido = false;
+        for (Cliente c : this.cola) {
+            if (c.getDni() == cliente.getDni()) {
+                dniRepetido = true;
+                break;
+            }
+        }
+        if (dniRepetido) {
             throw new DniRepetidoException(msgA);
         }
+        System.out.println("Cliente con DNI " + cliente.getDni() + " agregado a la fila.");
         this.cola.add(cliente);
     }
 
@@ -29,6 +37,7 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
         } catch (Exception e) {
             throw e;
         }
+        System.out.println("Llamando al siguiente cliente en la fila...");
         return cola.poll();
     }
 
