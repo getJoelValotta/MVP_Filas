@@ -24,25 +24,25 @@ public class ManejadorCliente implements Runnable {
     @Override
     public void run() {
         try {
+            
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String dniRecibido = in.readLine();
-            try {
-                Cliente cliente = new Cliente(dniRecibido);
-                gestorFila.agregarCliente(cliente);
-            } catch (DniVacioException e) {
-                System.err.println("Error al procesar cliente: " + e.getMessage());
-            } catch (DniInvalidoException e) {
-                System.err.println("Error al procesar cliente: " + e.getMessage());
-            } catch (DniRepetidoException e) {
-                out.println("false");
-                System.err.println("Error al procesar cliente: " + e.getMessage());
-            } finally {
-                socket.close();
+            while(true){
+                String dniRecibido = in.readLine();
+                try {
+                    Cliente cliente = new Cliente(dniRecibido);
+                    gestorFila.agregarCliente(cliente);
+                    out.println("true");
+                } catch (DniVacioException e) {
+                    System.err.println("Error al procesar cliente: " + e.getMessage());
+                } catch (DniInvalidoException e) {
+                    System.err.println("Error al procesar cliente: " + e.getMessage());
+                } catch (DniRepetidoException e) {
+                    out.println("false");
+                    System.err.println("Error al procesar cliente: " + e.getMessage());
+                }
             }
-            
-            
-
+            // TODO: Agregar manejo de cierre de conexión y recursos
         } catch (IOException e) {
             e.printStackTrace();
         }

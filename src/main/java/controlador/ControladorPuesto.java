@@ -60,7 +60,7 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
         this.vistaPuesto.setCantClientes(numClientes);
     }
 
-    public void main(String[] args) {
+    public void arrancaPuesto() {
         // ARRANCA EL HILO QUE ESCUCHA AL SERVIDOR.
         new EscuchaServerPuesto(this).start();
     }

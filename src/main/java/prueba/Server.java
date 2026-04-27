@@ -2,6 +2,7 @@ package prueba;
 
 import modelo.GestorFila;
 import server.EscuchaPuesto;
+import server.EscuchaTotem;
 import server.HablaMonitor;
 
 public class Server {
@@ -12,7 +13,7 @@ public class Server {
         EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes, hablaMonitor);
         hablaMonitor.start();
         new Thread(escuchaPuesto).start();
-        // EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
-        // new Thread(escuchaTotem).start();
+        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
+        new Thread(escuchaTotem).start();
     }
 }

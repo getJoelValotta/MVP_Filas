@@ -33,7 +33,7 @@ public class ControladorTotem implements ActionListener {
         }
         long dniDepurado = Long.parseLong(dni);
         vistaCliente.setGuiaExito("Dni Ingresado");
-        respuesta = emisorDatos.enviarDNI(dniDepurado, PORT);
+        respuesta = emisorDatos.enviarDNI(dniDepurado);
         if (respuesta == false){
             vistaCliente.setGuiaError("El DNI ya se encuentra registrado.");
         }

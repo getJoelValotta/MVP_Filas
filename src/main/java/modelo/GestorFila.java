@@ -14,6 +14,7 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     }
 
     public void agregarCliente(Cliente cliente) throws DniRepetidoException {
+        System.out.println("Agregando cliente con DNI: " + cliente.getDni());
         if (!this.cola.isEmpty() && this.cola.contains(cliente)) {
             throw new DniRepetidoException(msgA);
         }

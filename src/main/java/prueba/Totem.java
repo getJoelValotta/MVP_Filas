@@ -8,8 +8,9 @@ public class Totem {
     
     public static void main(String[] args) {
         TotemGUI vistaCliente = new TotemGUI();
-        EmisorDatos registros = new EmisorDatos();
-        ControladorTotem controladorCliente = new ControladorTotem(vistaCliente, registros);
+        EmisorDatos emisorDatos = new EmisorDatos();
+        emisorDatos.conectarAServer();
+        ControladorTotem controladorTotem = new ControladorTotem(vistaCliente, emisorDatos);
         vistaCliente.setVisible(true);
     }
 }
