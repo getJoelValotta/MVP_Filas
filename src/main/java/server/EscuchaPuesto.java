@@ -53,13 +53,15 @@ public class EscuchaPuesto implements Runnable {
     public void run() { // se inicia: new Thread(new EscuchaTotem()).start();)
         ServerSocket serverSocket = null;
         System.out.println("Escuchando puestos...");
+        gestorFila.setEscuchaPuesto(this);
         try {
             serverSocket = new ServerSocket(PORT);
             while (true) {
                 Socket socket = serverSocket.accept();
                 // Este codigo se corre una vez por cada puesto conectado al server
                 int numPuesto = getNumeroPuesto();
-                ManejaPuesto manejaPuesto = new ManejaPuesto(socket, numPuesto, numClientesEspera, gestorFila, this, hablaMonitor);
+                ManejaPuesto manejaPuesto = new ManejaPuesto(socket, numPuesto, numClientesEspera, gestorFila, this,
+                        hablaMonitor);
                 manejadoresPuestos.put(numPuesto, manejaPuesto);
                 manejaPuesto.start();
             }

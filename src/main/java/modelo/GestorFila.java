@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import server.EscuchaPuesto;
 
 import exceptions.DniRepetidoException;
 
@@ -9,8 +10,14 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
 
     private LinkedBlockingQueue<Cliente> cola = null;
 
+    private EscuchaPuesto escuchaPuesto = null;
+
     public GestorFila() {
         this.cola = new LinkedBlockingQueue<>();
+    }
+
+    public void setEscuchaPuesto(EscuchaPuesto escuchaPuesto) {
+        this.escuchaPuesto = escuchaPuesto;
     }
 
     public void agregarCliente(Cliente cliente) throws DniRepetidoException {
@@ -27,6 +34,7 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
         }
         System.out.println("Cliente con DNI " + cliente.getDni() + " agregado a la fila.");
         this.cola.add(cliente);
+        this.escuchaPuesto.actualizarClientesEspera(cola.size());
     }
 
     public Cliente llamarSiguiente() throws Exception {
