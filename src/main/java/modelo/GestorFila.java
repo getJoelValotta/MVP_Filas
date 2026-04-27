@@ -14,7 +14,7 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     }
 
     public void agregarCliente(Cliente cliente) throws DniRepetidoException {
-        if (this.cola.contains(cliente)) {
+        if (!this.cola.isEmpty() && this.cola.contains(cliente)) {
             throw new DniRepetidoException(msgA);
         }
         this.cola.add(cliente);

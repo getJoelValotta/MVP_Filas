@@ -22,9 +22,10 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
         try {
             modeloPuesto.conectarAServer("localhost", PORT_ESCUCHAPUESTO);
         } catch (IOException e) {
-            System.out.println("Error conectando al servidor.");
+            System.out.println("Error conectando el puesto al servidor.");
         } finally {
             actualizaNumClientesVista(modeloPuesto.getNumClientes());
+            actualizaNumPuesto(modeloPuesto.getNumPuesto());
         }
 
     }
@@ -49,7 +50,10 @@ public class ControladorPuesto extends Thread { /* implements ActionListener */
     }
     public void setNumPuesto(int numPuesto) {
         modeloPuesto.setNumPuesto(numPuesto);
-        // TODO: THIS. VISTA PUESTO. SET NUMPUESTO
+        actualizaNumPuesto(numPuesto);
+    }
+    public void actualizaNumPuesto(int numPuesto){
+        vistaPuesto.setNumPuesto(numPuesto);
     }
 
     public void actualizaNumClientesVista(int numClientes) {

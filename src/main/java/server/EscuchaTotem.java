@@ -21,7 +21,6 @@ public class EscuchaTotem implements Runnable{
             while (true) {
                 Socket socket = serverSocket.accept();
                 new Thread(new ManejadorCliente(socket, gestorFila)).start();
-                socket.close();
             }
         }
         catch (Exception e) {

@@ -15,8 +15,8 @@ public class EmisorDatos {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out.println(dni);
-            out.close();
             respuesta = Boolean.parseBoolean(in.readLine());
+            out.close();
             in.close();
             socket.close();
         } catch (Exception e) {

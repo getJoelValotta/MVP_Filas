@@ -37,6 +37,8 @@ public class ManejadorCliente implements Runnable {
             } catch (DniRepetidoException e) {
                 out.println("false");
                 System.err.println("Error al procesar cliente: " + e.getMessage());
+            } finally {
+                socket.close();
             }
             
             

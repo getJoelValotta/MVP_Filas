@@ -1,31 +1,34 @@
 package vistas;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class PuestoGUI extends JPanel {
+public class PuestoGUI extends JFrame {
 	private JPanel panelAuxBtn;
 	private JPanel panelAuxLblLista;
-	private JPanel panelAuxLblActual;
+	private JPanel panelAuxNorte;
 	private JLabel lblCantClientesEspera;
 	private JLabel lblClienteActual;
 	private JPanel panelAuxLlamar;
 	private JPanel panelAuxReLlamar;
 	private JButton btnLlamar;
 	private JButton btnRenotificar;
+	private JLabel lblNumPuesto;
 
 
 	public PuestoGUI() {
 		setLayout(new BorderLayout(0, 0));
+		this.setSize(400,200);
+        this.setLocationRelativeTo(null);
 		
 		this.panelAuxBtn = new JPanel();
 		add(this.panelAuxBtn, BorderLayout.CENTER);
@@ -51,19 +54,24 @@ public class PuestoGUI extends JPanel {
 		this.lblCantClientesEspera.setFont(new Font("Segoe UI Variable", Font.PLAIN, 21));
 		this.panelAuxLblLista.add(this.lblCantClientesEspera);
 
-		this.panelAuxLblActual = new JPanel();
-		add(this.panelAuxLblLista, BorderLayout.NORTH);
+		this.panelAuxNorte = new JPanel();
+		add(this.panelAuxNorte, BorderLayout.NORTH);
+		this.panelAuxNorte.setLayout(new BorderLayout(0, 0));
 
 		this.lblClienteActual = new JLabel("");
 		this.lblClienteActual.setFont(new Font("Segoe UI Variable", Font.PLAIN, 21));
-		this.panelAuxLblActual.add(this.lblClienteActual);
+		this.panelAuxNorte.add(this.lblClienteActual, BorderLayout.CENTER);
+		
+		this.lblNumPuesto = new JLabel("");
+		this.lblNumPuesto.setFont(new Font("Tahoma", Font.BOLD, 20));
+		this.panelAuxNorte.add(this.lblNumPuesto, BorderLayout.WEST);
 
 
 	}
 	
 	public void setCantClientes(int clientes) {
 		this.lblCantClientesEspera.setText("Hay "+ clientes +" en cola");
-		this.lblCantClientesEspera.setForeground(Color.BLACK);
+
 	}
 	
 	public void inhabilitarBtn() { //para cuando no haya clientes en cola
@@ -78,11 +86,16 @@ public class PuestoGUI extends JPanel {
 
 	public void setClienteActual(long dni) {
 		this.lblClienteActual.setText("Cliente actual: "+ dni);
-		this.lblClienteActual.setForeground(Color.BLACK);
+	
 	}
 
 	public void limpiarClienteActual(){
 		this.lblClienteActual.setText("");
+	}
+	
+	public void setNumPuesto(int puesto) {
+		this.lblNumPuesto.setText("Puesto: "+puesto);
+
 	}
 
 

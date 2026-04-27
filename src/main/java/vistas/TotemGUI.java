@@ -5,15 +5,14 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-public class TotemGUI extends JPanel {
-	/**
-	 * 
-	 */
+public class TotemGUI extends JFrame {
+
 	private static final long serialVersionUID = 1L;
 	private JPanel panelAuxCampoDNI;
 	private JPanel panelAuxTxtDNI;
@@ -23,8 +22,12 @@ public class TotemGUI extends JPanel {
 	private JButton btnRegistrar;
 	private JPanel panelAuxTxtGuia;
 	private JLabel labelGuia;
+
+	
 	public TotemGUI() {
 		setLayout(new BorderLayout(0, 0));
+		this.setSize(400,200);
+        this.setLocationRelativeTo(null);
 		
 		this.panelAuxBtnRegistrar = new JPanel();
 		add(this.panelAuxBtnRegistrar, BorderLayout.SOUTH);
