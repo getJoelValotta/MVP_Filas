@@ -40,12 +40,15 @@ public class PuestoGUI extends JFrame {
 		
 		this.btnLlamar = new JButton("Llamar siguiente");
 		this.panelAuxLlamar.add(this.btnLlamar);
+		this.btnLlamar.setActionCommand("LLAMAR");
 		
 		this.panelAuxReLlamar = new JPanel();
 		this.panelAuxBtn.add(this.panelAuxReLlamar);
 		
 		this.btnRenotificar = new JButton("Re-notificar");
 		this.panelAuxReLlamar.add(this.btnRenotificar);
+		this.btnRenotificar.setActionCommand("RENOTIFICAR");
+
 		
 		this.panelAuxLblLista = new JPanel();
 		add(this.panelAuxLblLista, BorderLayout.SOUTH);

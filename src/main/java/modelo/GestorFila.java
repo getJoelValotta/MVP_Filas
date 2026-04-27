@@ -46,6 +46,7 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
             throw e;
         }
         System.out.println("Llamando al siguiente cliente en la fila...");
+        this.escuchaPuesto.actualizarClientesEspera(cola.size() - 1);
         return cola.poll();
     }
 

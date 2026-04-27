@@ -1,24 +1,21 @@
 package vistas;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.BorderFactory;
-import javax.swing.Timer;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.Timer;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class MonitorGUI extends JFrame {
 
     private JLabel[] lblTurnos;
     private JLabel[] lblPuestos;
     private JPanel[] panelesFila;
-    private static final int MAX_HISTORIAL = 5;
+    private static final int MAX_HISTORIAL = 6;
 
     public MonitorGUI() {
         setLayout(new GridLayout(MAX_HISTORIAL, 2, 5, 5));
@@ -51,7 +48,7 @@ public class MonitorGUI extends JFrame {
 
     public void registrarLlamado(String dni, String puesto) {
         int posicionExistente = -1;
-        int i=0;
+        int i=1;
         int limite;
 
         // 1. Buscar si el DNI ya está en pantalla
@@ -70,15 +67,15 @@ public class MonitorGUI extends JFrame {
             lblPuestos[i].setText(lblPuestos[i - 1].getText());
         }
 
-        lblTurnos[0].setText(dni);
-        lblPuestos[0].setText(puesto);
+        lblTurnos[1].setText(dni);
+        lblPuestos[1].setText(puesto);
 
-        ejecutarAnimacionPulso(lblTurnos[0], lblPuestos[0]);
+        ejecutarAnimacionPulso(lblTurnos[1], lblPuestos[1]);
     }
 
     private void ejecutarAnimacionPulso(JLabel labelDni, JLabel labelPuesto) {
-        Font fuenteOriginal = new Font("Tahoma", Font.BOLD, 15); 
-        Font fuenteGrande = new Font("Tahoma", Font.BOLD, 25);   
+        Font fuenteOriginal = new Font("Tahoma", Font.BOLD, 20); 
+        Font fuenteGrande = new Font("Tahoma", Font.BOLD, 35);   
         
         Timer timer = new Timer(200, null); 
         timer.addActionListener(new ActionListener() {

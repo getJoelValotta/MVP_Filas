@@ -67,7 +67,9 @@ public class ManejaPuesto extends Thread {
                         Cliente clienteSig = this.gestorfila.llamarSiguiente();
                         hablaMonitor.actualizaLLamado(clienteSig.getDni(), numPuesto);
                     } else if (buffer.equals("REN")) {
+                        System.err.println("El puesto " + numPuesto + " ha solicitado re-notificar al cliente.");
                         buffer = inStream.readUTF();
+                        System.err.println("El DNI del cliente a re-notificar es: " + Long.parseLong(buffer));
                         hablaMonitor.actualizaLLamado(Long.parseLong(buffer), numPuesto);
                     } else {
                         System.out.println("Codigo desconocido del puesto " + numPuesto + ": " + buffer);

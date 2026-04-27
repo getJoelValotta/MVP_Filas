@@ -20,8 +20,16 @@ public class ControladorPuesto extends Thread implements ActionListener { /* imp
     }
 
     public void actionPerformed(java.awt.event.ActionEvent e) { 
-        vistaPuesto.limpiarClienteActual();
-        modeloPuesto.llamarCliente();
+
+        switch (e.getActionCommand()) {
+            case "LLAMAR":
+                vistaPuesto.limpiarClienteActual();
+                modeloPuesto.llamarCliente();
+                break;
+            case "RENOTIFICAR":
+                modeloPuesto.reNotificar();
+                break;
+        }
     }
     
 
