@@ -19,7 +19,7 @@ public class ControladorPuesto extends Thread implements ActionListener { /* imp
         this.vistaPuesto.setActionListener(this);
     }
 
-    public void actionPerformed(java.awt.event.ActionEvent e) { 
+    public void actionPerformed(java.awt.event.ActionEvent e) {
 
         switch (e.getActionCommand()) {
             case "LLAMAR":
@@ -31,7 +31,6 @@ public class ControladorPuesto extends Thread implements ActionListener { /* imp
                 break;
         }
     }
-    
 
     public void conectarPuesto() {
         try {
@@ -45,11 +44,10 @@ public class ControladorPuesto extends Thread implements ActionListener { /* imp
 
     }
 
-    public void atiendeDNI(String DNI){
+    public void atiendeDNI(String DNI) {
         modeloPuesto.setDNIActual(DNI);
-        
+        this.vistaPuesto.setClienteActual(Long.parseLong(DNI));
     }
-
 
     public void desconectarDelServer() throws IOException {
         modeloPuesto.desconectarDelServer();
@@ -63,11 +61,13 @@ public class ControladorPuesto extends Thread implements ActionListener { /* imp
         modeloPuesto.setNumClientes(numClientes);
         actualizaNumClientesVista(numClientes);
     }
+
     public void setNumPuesto(int numPuesto) {
         modeloPuesto.setNumPuesto(numPuesto);
         actualizaNumPuesto(numPuesto);
     }
-    public void actualizaNumPuesto(int numPuesto){
+
+    public void actualizaNumPuesto(int numPuesto) {
         vistaPuesto.setNumPuesto(numPuesto);
     }
 
