@@ -14,6 +14,7 @@ public class ModeloPuesto {
     private Socket socket;
     public int numClientesEsperando;
     private String DNI;
+    private Integer cantLLamadas;
 
     public ModeloPuesto() {
         this.socket = null;
@@ -43,20 +44,24 @@ public class ModeloPuesto {
         try {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF("SIG");
+            this.cantLLamadas = 0;
         } catch (IOException e) {
             System.out.println("Error enviando información del puesto " + numPuesto + ".");
         }
     }
 
     public void reNotificar() {
-        try {
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            out.writeUTF("REN");
-            out.writeUTF(DNI);
+        if (this.cantLLamadas < 3){
+            try {
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                out.writeUTF("REN");
+                out.writeUTF(DNI);
+                this.cantLLamadas += 1;
 
-        } catch (IOException e) {
-            System.out.println("Error renotificando puesto " + numPuesto + ".");
-        }
+            } catch (IOException e) {
+                System.out.println("Error renotificando puesto " + numPuesto + ".");
+            }
+        }    
     }
 
     public DataInputStream getInputStream() throws IOException {
