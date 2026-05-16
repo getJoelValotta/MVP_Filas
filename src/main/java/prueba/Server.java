@@ -1,6 +1,7 @@
 package prueba;
 
 import modelo.GestorFila;
+import server.EnviaHeartBeat;
 import server.EscuchaPuesto;
 import server.EscuchaTotem;
 import server.HablaMonitor;
@@ -15,5 +16,7 @@ public class Server {
         EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
         new Thread(escuchaPuesto).start();
         new Thread(escuchaTotem).start();
+        EnviaHeartBeat enviaHeartBeat = new EnviaHeartBeat();
+        new Thread(enviaHeartBeat).start();
     }
 }

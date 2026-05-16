@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import modelo.GestorFila;
+
 public class EscuchaHeartBeat implements Runnable {
     private final String IP_PRINCIPAL = "localhost";
     private final int PORT = 999;
@@ -26,6 +28,9 @@ public class EscuchaHeartBeat implements Runnable {
 
                 if ("OK".equals(respuesta)) {
                     System.out.println("Servidor principal activo");
+                } else {
+                    System.out.println("Respuesta inesperada del servidor principal");
+                    cantErrores++;
                 }
 
             } catch (Exception e) {
@@ -40,7 +45,21 @@ public class EscuchaHeartBeat implements Runnable {
             }
         }
 
+        System.out.println("Servidor principal inactivo. Iniciando servidor de respaldo...");
+
+
         
 
+    }
+
+
+    public void iniciaRespaldo() {
+        GestorFila colaClientes = new GestorFila();
+        HablaMonitor hablaMonitor = new HablaMonitor(colaClientes);
+        EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes, hablaMonitor);
+        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
+        new Thread(hablaMonitor).start();
+        new Thread(escuchaPuesto).start();
+        new Thread(escuchaTotem).start();
     }
 }

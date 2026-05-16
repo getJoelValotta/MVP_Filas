@@ -1,16 +1,17 @@
 package prueba;
 
 import modelo.GestorFila;
-import server.EscuchaPuesto;
-import server.EscuchaTotem;
-import server.HablaMonitor;
+import server.EscuchaHeartBeat;
+import server.GestorRespaldo;
 
 public class ServerRespaldo {
 
     public static void main(String[] args) {
         GestorFila colaClientes = new GestorFila();
-        HablaMonitor hablaMonitor = new HablaMonitor(colaClientes);
-        EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes, hablaMonitor);
-        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
+        EscuchaHeartBeat escuchaHeartBeat = new EscuchaHeartBeat();
+        GestorRespaldo gestorRespaldo = new GestorRespaldo();
+        new Thread(gestorRespaldo).start();
+        new Thread(escuchaHeartBeat).start();
+       
     }
 }
