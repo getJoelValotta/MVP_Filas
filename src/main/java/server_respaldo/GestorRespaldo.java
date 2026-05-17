@@ -1,4 +1,4 @@
-package server;
+package server_respaldo;
 
 
 import java.io.BufferedReader;
@@ -16,11 +16,9 @@ import modelo.GestorFila;
 
 public class GestorRespaldo implements Runnable{
     private final int PORT = 1010;
-    private Socket socket;
     private GestorFila gestorFila;
 
-    public void GestionRespaldo(Socket socket, GestorFila gestorFila) {
-        this.socket = new Socket()  
+    public GestorRespaldo(GestorFila gestorFila) {
         this.gestorFila = gestorFila;
     }
 
@@ -31,19 +29,30 @@ public class GestorRespaldo implements Runnable{
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             while(true){
-                String dniRecibido = in.readLine();
-                try {
-                    Cliente cliente = new Cliente(dniRecibido);
-                    gestorFila.agregarCliente(cliente);
-                    out.println("true");
-                } catch (DniVacioException e) {
-                    System.err.println("Error al procesar cliente: " + e.getMessage());
-                } catch (DniInvalidoException e) {
-                    System.err.println("Error al procesar cliente: " + e.getMessage());
-                } catch (DniRepetidoException e) {
-                    out.println("false");
-                    System.err.println("Error al procesar cliente: " + e.getMessage());
+                String operacion = in.readLine();
+
+                if (operacion.equals("agrega")) {
+                    try {
+                        String dniRecibido = in.readLine();
+                        Cliente cliente = new Cliente(dniRecibido);
+                        this.gestorFila.agregarCliente(cliente);
+                    } catch (DniVacioException e) {
+
+                    } catch (DniInvalidoException e) {
+
+                    } catch (DniRepetidoException e) {
+                        
+                    }
+                    
+                } else if (operacion.equals("llama")) {
+                    try {  
+                        Cliente dniTemp = this.gestorFila.llamarSiguiente();
+                    } catch (Exception e) {
+
+                    }
                 }
+
+                
             }
             
         } catch (IOException e) {

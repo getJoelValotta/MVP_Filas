@@ -1,8 +1,8 @@
 package prueba;
 
 import modelo.GestorFila;
-import server.EscuchaHeartBeat;
-import server.GestorRespaldo;
+import server_respaldo.EscuchaHeartBeat;
+import server_respaldo.GestorRespaldo;
 
 public class ServerRespaldo {
 

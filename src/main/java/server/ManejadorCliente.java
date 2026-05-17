@@ -31,6 +31,7 @@ public class ManejadorCliente implements Runnable {
                 try {
                     Cliente cliente = new Cliente(dniRecibido);
                     gestorFila.agregarCliente(cliente);
+                    // Se  lo mando al respaldo.
                     out.println("true");
                 } catch (DniVacioException e) {
                     System.err.println("Error al procesar cliente: " + e.getMessage());

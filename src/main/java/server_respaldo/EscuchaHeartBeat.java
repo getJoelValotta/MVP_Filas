@@ -1,10 +1,13 @@
-package server;
+package server_respaldo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
 import modelo.GestorFila;
+import server.EscuchaPuesto;
+import server.EscuchaTotem;
+import server.HablaMonitor;
 
 public class EscuchaHeartBeat implements Runnable {
     private final String IP_PRINCIPAL = "localhost";
