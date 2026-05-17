@@ -20,7 +20,7 @@ public class GestorRespaldo implements Runnable{
     private GestorFila gestorFila;
 
     public void GestionRespaldo(Socket socket, GestorFila gestorFila) {
-        this.socket = socket;
+        this.socket = new Socket()  
         this.gestorFila = gestorFila;
     }
 
@@ -51,13 +51,6 @@ public class GestorRespaldo implements Runnable{
         }
     }
 
-    public void iniciarRespaldo() {
-        HablaMonitor hablaMonitor = new HablaMonitor(this.gestorFila);
-        EscuchaPuesto escuchaPuesto = new EscuchaPuesto(this.gestorFila, hablaMonitor);
-        EscuchaTotem escuchaTotem = new EscuchaTotem(this.gestorFila);
-        new Thread(hablaMonitor).start();
-        new Thread(escuchaPuesto).start();
-        new Thread(escuchaTotem).start();
-    }
+    
     
 }

@@ -9,9 +9,8 @@ public class ServerRespaldo {
     public static void main(String[] args) {
         GestorFila colaClientes = new GestorFila();
         EscuchaHeartBeat escuchaHeartBeat = new EscuchaHeartBeat();
-        GestorRespaldo gestorRespaldo = new GestorRespaldo();
+        GestorRespaldo gestorRespaldo = new GestorRespaldo(colaClientes);
         new Thread(gestorRespaldo).start();
         new Thread(escuchaHeartBeat).start();
-       
     }
 }
