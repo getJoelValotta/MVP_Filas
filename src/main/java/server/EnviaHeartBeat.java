@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class EnviaHeartBeat implements Runnable {
 
-    private final int PORT = 999;
+    private final int PORT = 1212;
 
     @Override
     public void run() {

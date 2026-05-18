@@ -8,18 +8,18 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import exceptions.DniInvalidoException;
-import exceptions.DniRepetidoException;
-import exceptions.DniVacioException;
 import modelo.Cliente;
 import modelo.GestorFila;
+import server.EscuchaPuesto;
+import server.EscuchaTotem;
+import server.HablaMonitor;
 
 public class GestorRespaldo implements Runnable{
     private final int PORT = 1010;
-    private GestorFila gestorFila;
+    private GestorFila colaClientes;
 
-    public GestorRespaldo(GestorFila gestorFila) {
-        this.gestorFila = gestorFila;
+    public GestorRespaldo(GestorFila colaClientes) {
+        this.colaClientes = colaClientes;
     }
 
     @Override
@@ -31,22 +31,22 @@ public class GestorRespaldo implements Runnable{
             while(true){
                 String operacion = in.readLine();
 
+                if (operacion == null) { // conexión cerrada
+                    System.out.println("Gestor desconectado.");
+                    break;
+                }
+
                 if (operacion.equals("agrega")) {
                     try {
                         String dniRecibido = in.readLine();
                         Cliente cliente = new Cliente(dniRecibido);
-                        this.gestorFila.agregarCliente(cliente);
-                    } catch (DniVacioException e) {
+                        this.colaClientes.agregarCliente(cliente);
+                    } catch (Exception e) {
 
-                    } catch (DniInvalidoException e) {
-
-                    } catch (DniRepetidoException e) {
-                        
                     }
-                    
                 } else if (operacion.equals("llama")) {
                     try {  
-                        Cliente dniTemp = this.gestorFila.llamarSiguiente();
+                        Cliente dniTemp = this.colaClientes.llamarSiguiente();
                     } catch (Exception e) {
 
                     }
@@ -60,6 +60,25 @@ public class GestorRespaldo implements Runnable{
         }
     }
 
-    
-    
+    public void arrancarComoServidor() {
+        // Arranca los mismos componentes que el servidor principal
+        HablaMonitor hablaMonitor = new HablaMonitor();
+        EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes, hablaMonitor);
+        EscuchaTotem escuchaTotem = new EscuchaTotem(colaClientes);
+
+        colaClientes.setEscuchaPuesto(escuchaPuesto);
+
+        hablaMonitor.start();
+        new Thread(escuchaPuesto).start();
+        new Thread(escuchaTotem).start();
+
+        // No arranca EnviaHeartBeat porque el respaldo 
+        // no necesita enviar heartbeat a nadie
+        
+        System.out.println("Servidor de respaldo activo.");
+    }
 }
+
+    
+    
+

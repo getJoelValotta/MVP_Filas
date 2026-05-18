@@ -1,18 +1,28 @@
 package modelo;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import server.EscuchaPuesto;
 
 import exceptions.DniRepetidoException;
+import server.EscuchaPuesto;
+import server.HablaGestor;
 
 public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public static final String msgA = "El DNI ya se encuentra registrado.";
+    public HablaGestor hablaGestor;
+    public boolean respaldo;
 
     private LinkedBlockingQueue<Cliente> cola = null;
 
     private EscuchaPuesto escuchaPuesto = null;
 
+    public GestorFila(HablaGestor hablaGestor) {
+        this.hablaGestor = hablaGestor;
+        this.cola = new LinkedBlockingQueue<>();
+        respaldo = false;
+    }
+
     public GestorFila() {
+        respaldo = true;
         this.cola = new LinkedBlockingQueue<>();
     }
 
@@ -23,6 +33,9 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public void agregarCliente(Cliente cliente) throws DniRepetidoException {
         System.out.println("Agregando cliente con DNI: " + cliente.getDni());
         boolean dniRepetido = false;
+        if (!respaldo){
+            hablaGestor.enviaDNI(cliente.getDni());
+        }
         for (Cliente c : this.cola) {
             if (c.getDni() == cliente.getDni()) {
                 dniRepetido = true;
@@ -34,7 +47,9 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
         }
         System.out.println("Cliente con DNI " + cliente.getDni() + " agregado a la fila.");
         this.cola.add(cliente);
-        this.escuchaPuesto.actualizarClientesEspera(cola.size());
+        if (this.escuchaPuesto != null) {
+            this.escuchaPuesto.actualizarClientesEspera(cola.size());
+        }
     }
 
     public Cliente llamarSiguiente() throws Exception {
@@ -42,11 +57,16 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
             if (cola.isEmpty()) {
                 throw new Exception("No hay clientes en la fila");
             }
+            if (!respaldo) {
+                hablaGestor.llamaSiguiente();
+            }
         } catch (Exception e) {
             throw e;
         }
         System.out.println("Llamando al siguiente cliente en la fila...");
-        this.escuchaPuesto.actualizarClientesEspera(cola.size() - 1);
+        if (this.escuchaPuesto != null) {
+            this.escuchaPuesto.actualizarClientesEspera(cola.size() - 1);
+        }
         return cola.poll();
     }
 

@@ -4,17 +4,14 @@ import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import modelo.GestorFila;
 
 public class HablaMonitor extends Thread{
-    private GestorFila gestorFila;
     private int PORT = 999;
     private String IP = "localhost";
     private Socket socketMonitor;
     private DataOutputStream out;
 
-    public HablaMonitor(GestorFila gestorFila) {
-        this.gestorFila = gestorFila;
+    public HablaMonitor() {
     }
 
     @Override

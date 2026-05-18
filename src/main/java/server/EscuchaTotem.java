@@ -17,13 +17,14 @@ public class EscuchaTotem implements Runnable{
     public void run() { // se inicia: new Thread(new EscuchaTotem()).start();)
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
+            System.out.println("EscuchaTotem escuchando en puerto " + PORT);
             while (true) {
                 Socket socket = serverSocket.accept();
                 new Thread(new ManejadorCliente(socket, gestorFila)).start();
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error en EscuchaTotem: " + e.getMessage());
         }
     }
 

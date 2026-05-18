@@ -9,7 +9,8 @@ import vistas.TotemGUI;
 public class ControladorTotem implements ActionListener {
     private TotemGUI vistaCliente;
     private EmisorDatos emisorDatos;
-    private int PORT = 777;
+    private int PORT_TOTEM = 777;
+    private String IP_RESPALDO = "localhost";
 
     public ControladorTotem(TotemGUI vistaCliente, EmisorDatos emisorDatos) {
         this.vistaCliente = vistaCliente;
@@ -45,6 +46,11 @@ public class ControladorTotem implements ActionListener {
         }
         vistaCliente.limpiaDNI();
     }   
+
+    public void cambiarAServidorRespaldo() {
+        System.out.println("Totem cambiando al servidor de respaldo...");
+        emisorDatos.conectarAServer(IP_RESPALDO, PORT_TOTEM);
+    }
         
 }
 

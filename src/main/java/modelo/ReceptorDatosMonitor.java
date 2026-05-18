@@ -14,20 +14,24 @@ public class ReceptorDatosMonitor implements Runnable {
     }
 
     public void run() {
+    while (true) {
         try {
             Socket socket = new Socket(IP, port);
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            while(true){
-                System.out.println("Esperando datos del monitor...");
+            System.out.println("Conectado al servidor.");
+            while (true) {
                 String dniRecibido = in.readUTF();
-                System.out.println("Dni recibido: " + dniRecibido);
                 String puesto = in.readUTF();
-                System.out.println("Puesto recibido: " + puesto);
-                controlador.accionRealizada(dniRecibido,puesto);
-                System.out.println("Listo pa");
+                controlador.accionRealizada(dniRecibido, puesto);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Se perdió conexión con el servidor, reintentando...");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
         }
     }
+}
 }

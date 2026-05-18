@@ -28,6 +28,7 @@ public class ManejadorCliente implements Runnable {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             while(true){
                 String dniRecibido = in.readLine();
+                System.out.println("DNI recibido: " + dniRecibido);
                 try {
                     Cliente cliente = new Cliente(dniRecibido);
                     gestorFila.agregarCliente(cliente);
