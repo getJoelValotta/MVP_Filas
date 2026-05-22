@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
+import exceptions.ColaVaciaException;
 import exceptions.DniInvalidoException;
 import exceptions.DniVacioException;
 import modelo.Cliente;
@@ -65,13 +66,17 @@ public class ManejaPuesto extends Thread {
                 buffer = inStream.readUTF();
                 try {
                     if (buffer.equals("SIG")) {
-                        Cliente clienteSig = this.gestorfila.llamarSiguiente();
-                        hablaMonitor.actualizaLLamado(clienteSig.getDni(), numPuesto);
                         try {
-                            this.outStream.writeUTF("DNI");
-                            this.outStream.writeUTF(Long.toString(clienteSig.getDni()));
-                        } catch (Exception e) {
-                            System.out.println("Error enviando el DNI al puesto " + numPuesto + ".");
+                            Cliente clienteSig = this.gestorfila.llamarSiguiente();
+                            hablaMonitor.actualizaLLamado(clienteSig.getDni(), numPuesto);
+                            try {
+                                this.outStream.writeUTF("DNI");
+                                this.outStream.writeUTF(Long.toString(clienteSig.getDni()));
+                            } catch (Exception e) {
+                                System.out.println("Error enviando el DNI al puesto " + numPuesto + ".");
+                            }
+                        } catch (ColaVaciaException e) {
+                            System.err.println("No hay clientes en la fila para el puesto " + numPuesto + ".");
                         }
                     } else if (buffer.equals("REN")) {
                         System.err.println("El puesto " + numPuesto + " ha solicitado re-notificar al cliente.");
@@ -82,7 +87,7 @@ public class ManejaPuesto extends Thread {
                         System.out.println("Codigo desconocido del puesto " + numPuesto + ": " + buffer);
                     }
 
-                } catch (DniVacioException | DniInvalidoException e) {
+                } catch (Exception e) {
                     System.err.println("Error al procesar cliente: " + e.getMessage());
                 }
 

@@ -3,6 +3,7 @@ package modelo;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import exceptions.DniRepetidoException;
+import exceptions.ColaVaciaException;
 import server.EscuchaPuesto;
 import server.HablaGestor;
 
@@ -33,7 +34,7 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public void agregarCliente(Cliente cliente) throws DniRepetidoException {
         System.out.println("Agregando cliente con DNI: " + cliente.getDni());
         boolean dniRepetido = false;
-        if (!respaldo){
+        if (!respaldo) {
             hablaGestor.enviaDNI(cliente.getDni());
         }
         for (Cliente c : this.cola) {
@@ -52,10 +53,10 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
         }
     }
 
-    public Cliente llamarSiguiente() throws Exception {
+    public Cliente llamarSiguiente() throws ColaVaciaException {
         try {
             if (cola.isEmpty()) {
-                throw new Exception("No hay clientes en la fila");
+                throw new ColaVaciaException();
             }
             if (!respaldo) {
                 hablaGestor.llamaSiguiente();
