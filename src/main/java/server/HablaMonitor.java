@@ -3,12 +3,13 @@ package server;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class HablaMonitor extends Thread {
     private int PORT = 999;
     // private String IP = "localhost";
     private Socket socketMonitor;
-    private DataOutputStream out;
+    private LinkedBlockingQueue<DataOutputStream> colaMonitores;
 
     public HablaMonitor() {
     }
@@ -16,16 +17,17 @@ public class HablaMonitor extends Thread {
     @Override
     public void run() {
         ServerSocket serverSocket = null;
+        colaMonitores = new LinkedBlockingQueue<>();
         try {
             serverSocket = new ServerSocket(PORT);
-            this.socketMonitor = serverSocket.accept();
-            this.out = new DataOutputStream(this.socketMonitor.getOutputStream());
+            while (true) {
+                this.socketMonitor = serverSocket.accept();
+                DataOutputStream out = new DataOutputStream(this.socketMonitor.getOutputStream());
+                colaMonitores.put(out);
+            }
         } catch (Exception e) {
             System.out.println("No se pudo conectar el monitor " + e);
         } finally {
-            // Cerramos el serverSocket, ya que ya cumplió su función (aceptar la conexión
-            // del monitor)
-            // El socketMonitor se mantiene abierto para enviar datos al monitor
             try {
                 if (serverSocket != null) {
                     serverSocket.close();
@@ -38,12 +40,14 @@ public class HablaMonitor extends Thread {
 
     public void actualizaLLamado(Long dni, int numPuesto) {
         try {
-            out.writeUTF(Long.toString(dni));
-            out.writeUTF(Integer.toString(numPuesto));
-            System.out.println("Ahi mande al monitor el dni " + Long.toString(dni) + " y el puesto "
+            for (DataOutputStream out : colaMonitores) {
+                out.writeUTF(Long.toString(dni));
+                out.writeUTF(Integer.toString(numPuesto));
+            }
+            System.out.println("Ahi mande a monitor/es el dni " + Long.toString(dni) + " y el puesto "
                     + Integer.toString(numPuesto));
         } catch (Exception e) {
-            System.out.println("Error actualizando el monitor " + e);
+            System.out.println("Error actualizando el/los monitor/es " + e);
         }
     }
 }
