@@ -70,6 +70,9 @@ public class GestorRespaldo implements Runnable {
     }
 
     public void arrancarComoServidor() {
+        // TODO: ESTO SOLO FUNCIONA SI EL SERVIDOR PRINCIPAL SE TERMINÓ, SI ESTÁ
+        // SATURADO, ESTOS PUESTOS QUE OCUPAN LOS
+        // MÓDULOS ESTARÍAN OCUPADOS!!! DECIDIR QUE HACER
         // Arranca los mismos componentes que el servidor principal
         HablaMonitor hablaMonitor = new HablaMonitor();
         EscuchaPuesto escuchaPuesto = new EscuchaPuesto(colaClientes, hablaMonitor);
