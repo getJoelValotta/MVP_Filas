@@ -19,7 +19,7 @@ public class HablaGestor {
         try {
             this.socket = new Socket(IP, PORT);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error al conectar con el servidor de respaldo: " + e.getMessage());
         }
 
     }
@@ -30,7 +30,7 @@ public class HablaGestor {
             out.println("agrega");
             out.println(dni);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error al enviar el DNI al servidor de respaldo: " + e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class HablaGestor {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             out.println("llama");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error al llamar al siguiente cliente: " + e.getMessage());
         }
     }
 
@@ -55,6 +55,7 @@ public class HablaGestor {
             }
             return listaDni;
         } catch (IOException e) {
+            System.err.println("Error obteniendo la cola desde el servidor de respaldo: " + e.getMessage());
             throw new IOException("Error obteniendo la cola desde el servidor de respaldo", e);
         }
     }
