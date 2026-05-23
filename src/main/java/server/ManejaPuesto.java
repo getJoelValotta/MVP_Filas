@@ -4,9 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
-import exceptions.ColaVaciaException;
-import exceptions.DniInvalidoException;
-import exceptions.DniVacioException;
+import exceptions.*;
 import modelo.Cliente;
 import modelo.GestorFila;
 

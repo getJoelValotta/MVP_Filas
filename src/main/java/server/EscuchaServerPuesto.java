@@ -33,6 +33,8 @@ public class EscuchaServerPuesto extends Thread {
 
                 } else {
                     System.out.println("Codigo desconocido: " + inputString);
+                    // Consume el siguiente UTF para evitar desincronización
+                    @SuppressWarnings("unused")
                     String buffer = in.readUTF();
                 }
 

@@ -5,7 +5,7 @@ import java.net.Socket;
 
 import modelo.GestorFila;
 
-public class EscuchaTotem implements Runnable{
+public class EscuchaTotem implements Runnable {
     private GestorFila gestorFila;
     private int PORT = 777;
     private String IP = "localhost";
@@ -15,16 +15,25 @@ public class EscuchaTotem implements Runnable{
     }
 
     public void run() { // se inicia: new Thread(new EscuchaTotem()).start();)
+        ServerSocket serverSocket = null;
         try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
+            serverSocket = new ServerSocket(PORT);
             System.out.println("EscuchaTotem escuchando en puerto " + PORT);
             while (true) {
                 Socket socket = serverSocket.accept();
                 new Thread(new ManejadorCliente(socket, gestorFila)).start();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error en EscuchaTotem: " + e.getMessage());
+        } finally {
+            try {
+                if (serverSocket != null) {
+                    System.out.println("Cerrando servidor EscuchaTotem...");
+                    serverSocket.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Error al cerrar el servidor: " + e.getMessage());
+            }
         }
     }
 
@@ -51,6 +60,5 @@ public class EscuchaTotem implements Runnable{
     public void setIP(String iP) {
         IP = iP;
     }
-
 
 }

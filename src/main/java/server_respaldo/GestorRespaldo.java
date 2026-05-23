@@ -45,7 +45,9 @@ public class GestorRespaldo implements Runnable {
                     }
                 } else if (operacion.equals("llama")) {
                     try {
-                        Cliente dniTemp = this.colaClientes.llamarSiguiente();
+                        // Necesito almacenar el cliente por la naturaleza de la función. No lo uso.
+                        @SuppressWarnings("unused")
+                        Cliente temp = this.colaClientes.llamarSiguiente();
                     } catch (Exception e) {
                         System.err.println("Error al llamar al siguiente cliente: " + e.getMessage());
                     }
