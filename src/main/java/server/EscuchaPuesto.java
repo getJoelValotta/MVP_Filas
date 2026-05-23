@@ -27,7 +27,6 @@ public class EscuchaPuesto implements Runnable {
     }
 
     public int getNumeroPuesto() {
-        // TODO: throws!???
         int num = -1;
         try {
             num = puestosDisponibles.first();

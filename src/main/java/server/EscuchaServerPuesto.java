@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 
 import controlador.ControladorPuesto;
 
-/// RECIBE TODO EL INPUT PARA EL PUESTO
 public class EscuchaServerPuesto extends Thread {
     ControladorPuesto controladorPuesto;
 

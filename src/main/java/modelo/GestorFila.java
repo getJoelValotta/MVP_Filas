@@ -6,7 +6,7 @@ import server.EscuchaPuesto;
 import server.HablaGestor;
 import java.util.List;
 
-public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
+public class GestorFila {
     public static final String msgA = "El DNI ya se encuentra registrado.";
     public HablaGestor hablaGestor;
     public boolean respaldo;

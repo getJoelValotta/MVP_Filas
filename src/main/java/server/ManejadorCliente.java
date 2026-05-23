@@ -26,13 +26,13 @@ public class ManejadorCliente implements Runnable {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            while(true){
+            while (true) {
                 String dniRecibido = in.readLine();
                 System.out.println("DNI recibido: " + dniRecibido);
                 try {
                     Cliente cliente = new Cliente(dniRecibido);
                     gestorFila.agregarCliente(cliente);
-                    // Se  lo mando al respaldo.
+                    // Se lo mando al respaldo.
                     out.println("true");
                 } catch (DniVacioException e) {
                     System.err.println("Error al procesar cliente: " + e.getMessage());
@@ -43,7 +43,6 @@ public class ManejadorCliente implements Runnable {
                     System.err.println("Error al procesar cliente: " + e.getMessage());
                 }
             }
-            // TODO: Agregar manejo de cierre de conexión y recursos
         } catch (IOException e) {
             e.printStackTrace();
         }
