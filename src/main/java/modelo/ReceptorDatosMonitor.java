@@ -31,11 +31,21 @@ public class ReceptorDatosMonitor implements Runnable {
             } finally {
                 try {
                     if (socket != null) {
-                        System.out.println("Cerrando conexión con el servidor (ReceptorDatosMonitor)...");
+                        System.out.println("Cerrando socket. (ReceptorDatosMonitor)...");
                         socket.close();
                     }
                 } catch (Exception e) {
                     System.out.println("Error al cerrar la conexión con el servidor");
+                }
+                try {
+                    System.out.println("Intentando reconectar en 3...");
+                    Thread.sleep(1000);
+                    System.out.println("Intentando reconectar en 2...");
+                    Thread.sleep(1000);
+                    System.out.println("Intentando reconectar en 1...");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println("Error durante el tiempo de espera para reconectar: " + e.getMessage());
                 }
             }
         }
