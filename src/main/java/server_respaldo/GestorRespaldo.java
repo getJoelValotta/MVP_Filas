@@ -1,6 +1,5 @@
 package server_respaldo;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +13,7 @@ import server.EscuchaPuesto;
 import server.EscuchaTotem;
 import server.HablaMonitor;
 
-public class GestorRespaldo implements Runnable{
+public class GestorRespaldo implements Runnable {
     private final int PORT = 1010;
     private GestorFila colaClientes;
 
@@ -28,7 +27,7 @@ public class GestorRespaldo implements Runnable{
             Socket socket = serverSocket.accept();
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            while(true){
+            while (true) {
                 String operacion = in.readLine();
 
                 if (operacion == null) { // conexión cerrada
@@ -42,19 +41,27 @@ public class GestorRespaldo implements Runnable{
                         Cliente cliente = new Cliente(dniRecibido);
                         this.colaClientes.agregarCliente(cliente);
                     } catch (Exception e) {
-
+                        System.err.println("Error al agregar cliente: " + e.getMessage());
                     }
                 } else if (operacion.equals("llama")) {
-                    try {  
+                    try {
                         Cliente dniTemp = this.colaClientes.llamarSiguiente();
                     } catch (Exception e) {
-
+                        System.err.println("Error al llamar al siguiente cliente: " + e.getMessage());
+                    }
+                } else if (operacion.equals("getCola")) {
+                    try {
+                        out.println(this.colaClientes.tamanio());
+                        for (Cliente cliente : this.colaClientes.getCola()) {
+                            out.println(cliente.getDni());
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error al enviar la cola al servidor principal: " + e.getMessage());
                     }
                 }
 
-                
             }
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,13 +79,14 @@ public class GestorRespaldo implements Runnable{
         new Thread(escuchaPuesto).start();
         new Thread(escuchaTotem).start();
 
-        // No arranca EnviaHeartBeat porque el respaldo 
+        // No arranca EnviaHeartBeat porque el respaldo
         // no necesita enviar heartbeat a nadie
-        
+
         System.out.println("Servidor de respaldo activo.");
     }
+
+    // Importante para inicializacion de servidor principal a partir del respaldo
+    public boolean colaVacia() {
+        return this.colaClientes.tamanio() == 0;
+    }
 }
-
-    
-    
-

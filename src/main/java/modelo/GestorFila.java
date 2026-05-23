@@ -1,11 +1,10 @@
 package modelo;
 
 import java.util.concurrent.LinkedBlockingQueue;
-
-import exceptions.DniRepetidoException;
-import exceptions.ColaVaciaException;
+import exceptions.*;
 import server.EscuchaPuesto;
 import server.HablaGestor;
+import java.util.List;
 
 public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public static final String msgA = "El DNI ya se encuentra registrado.";
@@ -25,6 +24,22 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public GestorFila() {
         respaldo = true;
         this.cola = new LinkedBlockingQueue<>();
+    }
+
+    // Constructor para la reconstruccion de la fila en el servidor principal a
+    // partir del respaldo
+    public GestorFila(HablaGestor hablaGestor, List<Long> colaDNI) {
+        this.hablaGestor = hablaGestor;
+        respaldo = false;
+        this.cola = new LinkedBlockingQueue<>();
+        for (Long dni : colaDNI) {
+            try {
+                Cliente cliente = new Cliente(Long.toString(dni));
+                this.cola.add(cliente);
+            } catch (DniVacioException | DniInvalidoException e) {
+                System.err.println("DNI invalido recuperado desde el server de resplado: " + e.getMessage());
+            }
+        }
     }
 
     public void setEscuchaPuesto(EscuchaPuesto escuchaPuesto) {
@@ -74,4 +89,9 @@ public class GestorFila { // TODO: PONER PUESTO AL QUE SE LLAMA
     public int tamanio() {
         return cola.size();
     }
+
+    public LinkedBlockingQueue<Cliente> getCola() {
+        return cola;
+    }
+
 }

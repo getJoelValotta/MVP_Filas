@@ -4,19 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-
-
 public class EscuchaHeartBeat implements Runnable {
     private final String IP_PRINCIPAL = "localhost";
     private final int PORT = 1212;
     private MonitorRespaldo monitorRespaldo;
 
-
     public EscuchaHeartBeat(MonitorRespaldo monitorRespaldo) {
         this.monitorRespaldo = monitorRespaldo;
     }
 
-
+    // El hilo que debe estar corriendo siempre que el server esté activo.
     @Override
     public void run() {
 
@@ -25,9 +22,8 @@ public class EscuchaHeartBeat implements Runnable {
         boolean principalListo = false;
         while (!principalListo) {
             try (
-                Socket socket = new Socket(IP_PRINCIPAL, PORT);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
-            ) {
+                    Socket socket = new Socket(IP_PRINCIPAL, PORT);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                 socket.setSoTimeout(300);
                 String respuesta = in.readLine();
                 if ("OK".equals(respuesta)) {
@@ -39,7 +35,11 @@ public class EscuchaHeartBeat implements Runnable {
             }
 
             if (!principalListo) {
-                try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -47,10 +47,9 @@ public class EscuchaHeartBeat implements Runnable {
         while (cantErrores < 3) {
 
             try (
-                Socket socket = new Socket(IP_PRINCIPAL, PORT);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream()))
-            ) {
+                    Socket socket = new Socket(IP_PRINCIPAL, PORT);
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(socket.getInputStream()))) {
 
                 socket.setSoTimeout(300);
 
